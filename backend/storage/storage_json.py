@@ -16,7 +16,7 @@ def save_file(new_data):
                                                          "date",
                                                          "likes"])):
             print("Error. File is corrupted. Save aborted.")
-    with open("data/storage.json", "w") as handle:
+    with open("/data/storage.json", "w") as handle:
         handle.write(json.dumps(new_data, indent=4))
 
 
@@ -26,15 +26,15 @@ def list_comments():
     :return: List of comments if the file is valid, else an empty list
     """
     try:
-        with open("data/storage.json", "r", encoding="utf-8") as handle:
+        with open("/data/storage.json", "r", encoding="utf-8") as handle:
             return json.load(handle)
     except (FileNotFoundError, JSONDecodeError):
-        with open("data/storage.json", "w") as handle:
+        with open("/data/storage.json", "w") as handle:
             handle.write(json.dumps("[]", indent=4))
         return []
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-        with open("data/storage.json", "w") as handle:
+        with open("/data/storage.json", "w") as handle:
             handle.write(json.dumps("[]", indent=4))
         return []
 
