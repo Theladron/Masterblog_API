@@ -29,11 +29,13 @@ def list_comments():
         with open("data/storage.json", "r", encoding="utf-8") as handle:
             return json.load(handle)
     except (FileNotFoundError, JSONDecodeError):
-        save_file("[]")
+        with open("data/storage.json", "w") as handle:
+            handle.write(json.dumps("[]", indent=4))
         return []
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-        save_file("[]")
+        with open("data/storage.json", "w") as handle:
+            handle.write(json.dumps("[]", indent=4))
         return []
 
 
