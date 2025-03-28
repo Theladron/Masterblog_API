@@ -152,7 +152,7 @@ def like_post(post_id):
     """
     Increments the like count for a specific post
     :param post_id: ID of the post to be liked as integer
-    :return: JSON response with the updated post or an error if not found
+    :return: JSON response with the updated post, else an error message
     """
     posts = list_comments()  # Get the full list of posts
     for index, post in enumerate(posts):
