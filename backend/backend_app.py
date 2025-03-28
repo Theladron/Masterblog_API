@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
-from backend.storage.storage_json import (
+from storage.storage_json import (
     update_comment,
     delete_comment,
     add_comment,
