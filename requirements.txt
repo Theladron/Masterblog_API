@@ -1,0 +1,3 @@
+Flask
+flask-swagger-ui
+flask-cors
