@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "id": 2,
+        "title": "string",
+        "content": "string",
+        "author": "string",
+        "date": "2025-03-27",
+        "likes": 2
+    },
+    {
+        "id": 3,
+        "title": "bla",
+        "content": "asd",
+        "author": "das",
+        "date": "2024-05-03",
+        "likes": 0
+    }
+]

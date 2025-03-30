@@ -169,6 +169,20 @@ h2.section-heading {
     cursor: pointer;
 }
 
+.edit-button
+{
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover{
+    background-color: lightgreen;
+}
+
 .delete-button:hover {
     background-color: #cc0000;
 }
