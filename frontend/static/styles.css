@@ -169,7 +169,7 @@ h2.section-heading {
     cursor: pointer;
 }
 
-.edit-button
+.edit-button, .update-button
 {
     background-color: green;
     color: white;
@@ -179,7 +179,7 @@ h2.section-heading {
     cursor: pointer;
 }
 
-.edit-button:hover{
+.edit-button:hover, .update-button:hover{
     background-color: lightgreen;
 }
 
