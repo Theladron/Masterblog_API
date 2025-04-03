@@ -1,3 +1,5 @@
+import os
+import sys
 from datetime import datetime
 
 from flask import Flask, jsonify, request
@@ -11,10 +13,12 @@ from storage.storage_json import (
     list_comments, save_file)
 
 app = Flask(__name__)
-CORS(app)  # This will enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}})
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 SWAGGER_URL = "/api/docs"
-API_URL_PATH = "/static/masterschoolblog.json"
+API_URL_PATH = f"{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
+                                               'backend', 'data', 'storage.json'))}"
 API_URL = API_URL_PATH
 
 swagger_ui_blueprint = get_swaggerui_blueprint(

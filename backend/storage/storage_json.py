@@ -1,5 +1,9 @@
 import json
+import os
 from json import JSONDecodeError
+
+STORAGE_PATH = f"{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
+                                               'data', 'storage.json'))}"
 
 
 def save_file(new_data):
@@ -16,7 +20,7 @@ def save_file(new_data):
                                                          "date",
                                                          "likes"])):
             print("Error. File is corrupted. Save aborted.")
-    with open("backend/data/storage.json", "w") as handle:
+    with open(STORAGE_PATH, "w") as handle:
         handle.write(json.dumps(new_data, indent=4))
 
 
@@ -26,15 +30,15 @@ def list_comments():
     :return: List of comments if the file is valid, else an empty list
     """
     try:
-        with open("backend/data/storage.json", "r", encoding="utf-8") as handle:
+        with open(STORAGE_PATH, "r", encoding="utf-8") as handle:
             return json.load(handle)
     except (FileNotFoundError, JSONDecodeError):
-        with open("backend/data/storage.json", "w") as handle:
+        with open(STORAGE_PATH, "w") as handle:
             handle.write(json.dumps("[]", indent=4))
         return []
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-        with open("backend/data/storage.json", "w") as handle:
+        with open(STORAGE_PATH, "w") as handle:
             handle.write(json.dumps("[]", indent=4))
         return []
 
