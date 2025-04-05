@@ -2,8 +2,8 @@ import json
 import os
 from json import JSONDecodeError
 
-STORAGE_PATH = f"{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
-                                               'data', 'storage.json'))}"
+STORAGE_PATH = f"""{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
+                                               'data', 'storage.json'))}"""
 
 
 def save_file(new_data):
