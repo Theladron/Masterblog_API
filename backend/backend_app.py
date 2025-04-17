@@ -35,7 +35,7 @@ def serve_swagger():
     Serves the Swagger JSON file from the static directory.
     """
     return send_from_directory(os.path.join(os.path.dirname(__file__), 'static'),
-                               'Masterschoolblog.json')
+                               'masterschoolblog.json')
 
 
 @app.route('/api/posts', methods=['GET', 'POST'])
