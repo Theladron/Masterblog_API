@@ -3,7 +3,7 @@ import os
 from json import JSONDecodeError
 
 STORAGE_PATH = f"""{os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
-                                               'data', 'storage.json'))}"""
+                                                 'data', 'storage.json'))}"""
 
 
 def save_file(new_data):
@@ -11,17 +11,14 @@ def save_file(new_data):
     Saves the provided data to the storage file after checking its integrity.
     :param new_data: The list of comments to be saved in the file
     """
-    for comment in new_data:
-        if (new_data
-                and not all(comment.get(key) for key in ["id",
-                                                         "title",
-                                                         "content",
-                                                         "author",
-                                                         "date",
-                                                         "likes"])):
-            print("Error. File is corrupted. Save aborted.")
-    with open(STORAGE_PATH, "w") as handle:
-        handle.write(json.dumps(new_data, indent=4))
+    required_keys = ["id", "title", "content", "author", "date", "likes"]
+    if not all(isinstance(comment, dict)
+               and all(key in comment for key in required_keys) for comment in new_data):
+        print("Error. File is corrupted. Save aborted.")
+        return
+
+    with open(STORAGE_PATH, "w", encoding="utf-8") as handle:
+        json.dump(new_data, handle, indent=4)
 
 
 def list_comments():
@@ -33,13 +30,13 @@ def list_comments():
         with open(STORAGE_PATH, "r", encoding="utf-8") as handle:
             return json.load(handle)
     except (FileNotFoundError, JSONDecodeError):
-        with open(STORAGE_PATH, "w") as handle:
-            handle.write(json.dumps("[]", indent=4))
+        with open(STORAGE_PATH, "w", encoding="utf-8") as handle:
+            json.dump([], handle, indent=4)
         return []
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-        with open(STORAGE_PATH, "w") as handle:
-            handle.write(json.dumps("[]", indent=4))
+        with open(STORAGE_PATH, "w", encoding="utf-8") as handle:
+            json.dump([], handle, indent=4)
         return []
 
 
@@ -49,9 +46,10 @@ def add_comment(comment):
     :param comment: The comment dictionary to be added to the list
     :return: The added comment if successful, else None
     """
-    data = list_comments()
     if not all(comment.get(key) for key in ["title", "content", "author", "date"]):
         return None
+
+    data = list_comments()
     data.append(comment)
     save_file(data)
     return comment
@@ -60,14 +58,15 @@ def add_comment(comment):
 def delete_comment(comment_id):
     """
     Deletes a comment identified by its ID from the list and saves the updated list
-    if the Id is present in the database
+    if the id is present in the database
     :param comment_id: The ID of the comment to be deleted.
     :return: The ID of the deleted comment if successful, else None
     """
     data = list_comments()
-    comment = next((comment for comment in data if comment.get("id") == comment_id), None)
+    comment = next((c for c in data if c.get("id") == comment_id), None)
     if not comment:
-        return comment
+        return None
+
     data.remove(comment)
     save_file(data)
     return comment_id
@@ -82,9 +81,13 @@ def update_comment(index, comment):
     :return: The updated comment if successful, else None
     """
     data = list_comments()
-    if (index >= len(data)
-            or not all(comment.get(key) for key in ["title", "content", "author", "date"])):
+
+    if index >= len(data):
         return None
+
+    if not all(comment.get(key) for key in ["title", "content", "author", "date"]):
+        return None
+
     data[index] = comment
     save_file(data)
     return comment

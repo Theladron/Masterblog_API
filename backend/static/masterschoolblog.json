@@ -2,28 +2,47 @@
   "swagger": "2.0",
   "info": {
     "title": "Masterschool blog API",
-    "version": "1.0.0"
+    "version": "1.0.1",
+    "description": "Example Api for basic blog functions"
   },
-  "servers": [{ "url": "http://localhost:5001" }],
-  "tags": [{ "name": "POST", "description": "Post API - CRUD" }],
+  "tags": [
+    {
+      "name": "Post",
+      "description": "Post API - CRUD"
+    }
+  ],
   "paths": {
     "/api/posts": {
       "get": {
         "summary": "Returns all posts, optionally sorted by a field and direction",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "query",
             "name": "sort",
             "type": "string",
-            "description": "The field by which to sort the posts. Can be 'title', 'content', 'author', or 'date'."
+            "description": "The field by which to sort the posts.",
+            "enum": [
+              "title",
+              "content",
+              "author",
+              "date"
+            ]
           },
           {
             "in": "query",
             "name": "direction",
             "type": "string",
-            "description": "The sorting direction. Can be 'ascending' or 'descending'."
+            "description": "The sorting direction.",
+            "enum": [
+              "asc",
+              "desc"
+            ]
           }
         ],
         "responses": {
@@ -34,11 +53,25 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "id": { "type": "integer" },
-                  "title": { "type": "string" },
-                  "content": { "type": "string" },
-                  "author": { "type": "string" },
-                  "date": { "type": "string", "format": "date" }
+                  "id": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "likes": {
+                    "type": "integer"
+                  }
                 }
               }
             }
@@ -48,7 +81,20 @@
             "schema": {
               "type": "object",
               "properties": {
-                "error": { "type": "string" }
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data is empty. Please add a comment first",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -56,8 +102,12 @@
       },
       "post": {
         "summary": "Creates a new post",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -66,12 +116,27 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": { "type": "string" },
-                "content": { "type": "string" },
-                "author": { "type": "string" },
-                "date": { "type": "string", "format": "date" }
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2025-04-17"
+                }
               },
-              "required": ["title", "content", "author", "date"]
+              "required": [
+                "title",
+                "content",
+                "author",
+                "date"
+              ]
             }
           }
         ],
@@ -81,20 +146,36 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": { "type": "integer" },
-                "title": { "type": "string" },
-                "content": { "type": "string" },
-                "author": { "type": "string" },
-                "date": { "type": "string", "format": "date-time" }
+                "id": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "likes": {
+                  "type": "integer"
+                }
               }
             }
           },
           "400": {
-            "description": "Invalid input - missing or empty fields",
+            "description": "Missing or invalid input (missing fields, bad date, etc.)",
             "schema": {
               "type": "object",
               "properties": {
-                "error": { "type": "string" }
+                "error": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -104,8 +185,12 @@
     "/api/posts/{id}": {
       "put": {
         "summary": "Updates a post",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -120,10 +205,20 @@
             "schema": {
               "type": "object",
               "properties": {
-                "title": { "type": "string" },
-                "content": { "type": "string" },
-                "author": { "type": "string" },
-                "date": { "type": "string" }
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2025-04-17"
+                }
               }
             }
           }
@@ -132,15 +227,38 @@
           "200": {
             "description": "Post updated successfully"
           },
+          "400": {
+            "description": "Missing body, invalid fields, bad date, or non-integer ID",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
-            "description": "Post not found"
+            "description": "Post not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
       "delete": {
         "summary": "Deletes a post",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -151,10 +269,37 @@
         ],
         "responses": {
           "200": {
-            "description": "Post deleted successfully"
+            "description": "Post deleted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID must be an integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Post not found"
+            "description": "Post not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -162,8 +307,12 @@
     "/api/posts/{id}/like": {
       "post": {
         "summary": "Increments the like count of a specific post",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -179,17 +328,49 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": { "type": "integer" },
-                "title": { "type": "string" },
-                "content": { "type": "string" },
-                "author": { "type": "string" },
-                "date": { "type": "string", "format": "date" },
-                "likes": { "type": "integer" }
+                "id": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "author": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "likes": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID must be an integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
               }
             }
           },
           "404": {
-            "description": "Post not found"
+            "description": "Post not found or data is empty",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -197,8 +378,12 @@
     "/api/posts/search": {
       "get": {
         "summary": "Search posts by 'title', 'content', 'author' or 'date'",
-        "produces": ["application/json"],
-        "tags": ["Post"],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Post"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -233,11 +418,32 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "id": { "type": "string" },
-                  "title": { "type": "string" },
-                  "content": { "type": "string" },
-                  "author": { "type": "string" },
-                  "date": { "type": "string" }
+                  "id": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data is empty. Please add a comment first",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
                 }
               }
             }
